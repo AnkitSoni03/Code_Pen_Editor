@@ -1,7 +1,5 @@
 
 
-
-
 import { AppBar , Toolbar, styled } from '@mui/material';
 
 const Container = styled(AppBar)({
@@ -11,13 +9,13 @@ const Container = styled(AppBar)({
  
 const Header = () => {
 
-   const LOGO="codepen-logo-MY.gif"
+   const LOGO="codepen-logo-MY.gif"     
 
     return (
         <Container position='static'>
             <Toolbar>
             <img src={LOGO} alt="Logo" style={{ width : 80 }} />
-            <div> CodePen-Editor</div>
+            <div><h2> CodePen-Editor</h2></div>
             </Toolbar>
         </Container>
     )
