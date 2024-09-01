@@ -1,21 +1,20 @@
 import { useContext } from "react";
-
 import { DataContext } from "../context/DataProvider";
-
 import Editor from "./Editor";
-
 import { Box, styled } from '@mui/material';
 
 const Container = styled(Box)({
     display: 'flex',
     backgroundColor: '#060606',
-    height: '57vh'
+    height: '57vh',
+    '@media (max-width: 768px)': { // Mobile view
+        flexDirection: 'column',
+        height: 'auto',
+    }
 });
 
-
 const Code = () => {
-
-   const {html, setHtml, css, setCss, js, setJs}= useContext(DataContext);
+    const { html, setHtml, css, setCss, js, setJs } = useContext(DataContext);
     return (
         <Container>
             <Editor
