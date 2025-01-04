@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { Box, styled } from '@mui/material';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
-import { Controlled as ControlledEditor } from 'react-codemirror2';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/material.css'; 
-import 'codemirror/mode/xml/xml';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/mode/css/css';
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { css } from '@codemirror/lang-css';
+import { xml } from '@codemirror/lang-xml';
 import '../App.css';
 
 const Container = styled(Box)({
@@ -45,9 +43,22 @@ const Header = styled(Box)({
 const Editor = ({ heading, icon, color, value, onChange }) => {
     const [open, setOpen] = useState(true);
 
-    const handleChange = (editor, data, value) => {
+    const handleChange = (value) => {
         onChange(value);
-    }
+    };
+
+    const getExtensions = () => {
+        switch (heading.toLowerCase()) {
+            case 'html':
+                return [xml()];
+            case 'css':
+                return [css()];
+            case 'javascript':
+                return [javascript({ jsx: true })];
+            default:
+                return [];
+        }
+    };
 
     return (
         <Container style={open ? null : { 
@@ -82,17 +93,23 @@ const Editor = ({ heading, icon, color, value, onChange }) => {
                     onClick={() => setOpen(prevState => !prevState)}
                 />
             </Header>
-            <ControlledEditor 
-                className='controlled-editor'
-                value={value}
-                onBeforeChange={handleChange}
-                options={{
-                    theme: 'material',
-                    lineNumbers: true
-                }}
-            />
+            {open && (
+                <CodeMirror
+                    value={value}
+                    height="100%"
+                    theme="dark"
+                    extensions={getExtensions()}
+                    onChange={handleChange}
+                    style={{ flex: 1 }}
+                    basicSetup={{
+                        lineNumbers: true,
+                        highlightActiveLine: true,
+                        highlightSelectionMatches: true,
+                    }}
+                />
+            )}
         </Container>
-    )
-}
+    );
+};
 
 export default Editor;
